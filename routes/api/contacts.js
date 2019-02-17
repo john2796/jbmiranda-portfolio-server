@@ -6,8 +6,8 @@ const db = require("../../data/dbConfig");
 const transport = {
   host: "smtp.gmail.com",
   auth: {
-    user: "jbmiranda22796@gmail.com",
-    pass: "6198460543"
+    user: process.env.USR,
+    pass: process.env.PASS
   }
 };
 const transporter = nodemailer.createTransport(transport);
@@ -65,7 +65,7 @@ server.post("/", async (req, res) => {
 
   const mail = {
     from: name,
-    to: "jbmiranda22796@gmail.com",
+    to: process.env.USR,
     subject: `New Message from Portfolio Form`,
     text: `from name: ${name} ${email}  ${message}`
   };
