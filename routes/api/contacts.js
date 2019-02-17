@@ -5,6 +5,8 @@ const db = require("../../data/dbConfig");
 //nodemailer connectt server
 const transport = {
   host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.USR,
     pass: process.env.PASS
@@ -72,7 +74,7 @@ server.post("/", async (req, res) => {
 
   transporter.sendMail(mail, (err, data) => {
     if (err) {
-      res.json({ message: "fail" });
+      res.json({ message: "fail", err });
     } else {
       res.json({ message: "success" });
     }
