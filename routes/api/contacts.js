@@ -66,7 +66,7 @@ server.post("/", async (req, res) => {
 
   const mail = {
     from: name,
-    to: process.env.USR,
+    to: "benedictmiranda27@yahoo.com",
     subject: `New Message from Portfolio Form`,
     text: `from name: ${name} ${email}  ${message}`
   };
