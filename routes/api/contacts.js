@@ -1,11 +1,63 @@
 const express = require("express");
 const server = express.Router();
+const nodemailer = require("nodemailer");
+const db = require("../../data/dbConfig");
+
+const transport = {
+  host: "smtp.gmail.com",
+  auth: {
+    user: process.env.USR,
+    pass: process.env.PASS
+  }
+};
+
+const transporter = nodemailer.createTransport(transport);
+transporter.verify((err, success) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Server is ready to take messages");
+  }
+});
+
+const errorHelper = (statusCode, message, res) => {
+  res.status(statusCode).json({ message });
+};
 
 // @route    GET api/contact/testing
 // @desc     testing
 // @Access   Public
-server.get("/testing", (req, res) => {
-  res.send("Test works");
+server.get("/", async (req, res) => {
+  try {
+    const contact = await db("contact");
+    res.status(200).json(contact);
+  } catch (err) {
+    return errorHelper(500, `internal server err || ${err}`, res);
+  }
 });
 
+// @route    GET api/contact
+// @desc     send email to me once they submit form
+// @Access   Public
+server.post("/", async (req, res) => {
+  const { name, email, message } = req.body;
+  if (!name || !email || !message) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  const mail = {
+    from: name,
+    to: process.env.USR,
+    subject: `New Message from Portfolio Form`,
+    text: `from name: ${name} ${email}  ${message}`
+  };
+
+  transporter.sendMail(mail, (err, data) => {
+    if (err) {
+      res.json({ msg: "fail" });
+    } else {
+      res.json({ msg: "success" });
+    }
+  });
+});
 module.exports = server;

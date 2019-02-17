@@ -1,12 +1,10 @@
-import knex from "knex";
-
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("contact", function(tbl) {
-    tbl.increments();
+    tbl.increments(); //primary key
     tbl.timestamps(true, true);
-    tbal.string("name").notNullable();
-    tbal.string("email").notNullable();
-    tbal.string("message").notNullable();
+    tbl.string("name").notNullable();
+    tbl.string("email").notNullable();
+    tbl.string("message").notNullable();
   });
 };
 
