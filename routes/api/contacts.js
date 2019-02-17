@@ -10,7 +10,6 @@ const transport = {
     pass: process.env.PASS
   }
 };
-
 const transporter = nodemailer.createTransport(transport);
 transporter.verify((err, success) => {
   if (err) {
@@ -19,23 +18,23 @@ transporter.verify((err, success) => {
     console.log("Server is ready to take messages");
   }
 });
-
 const errorHelper = (statusCode, message, res) => {
   res.status(statusCode).json({ message });
 };
-
-// @route    GET api/contact/testing
-// @desc     testing
-// @Access   Public
-server.get("/", async (req, res) => {
+const getAllContact = async (req, res) => {
   try {
     const contact = await db("contact");
     res.status(200).json(contact);
   } catch (err) {
-    return errorHelper(500, `internal server err || ${err}`, res);
+    return errorHelper(500, "internal server error", res);
   }
+};
+// @route    GET api/contact/testing
+// @desc     testing
+// @Access   Public
+server.get("/", async (req, res) => {
+  getAllContact(req, res);
 });
-
 // @route    GET api/conatct/:id
 // @desc     get single item
 // @Access   Public
@@ -54,7 +53,6 @@ server.get("/:id", async (req, res) => {
     return errorHelper(500, "server internal error", res);
   }
 });
-
 // @route    GET api/contact
 // @desc     send email to me once they submit form
 // @Access   Public
@@ -79,4 +77,26 @@ server.post("/", async (req, res) => {
     }
   });
 });
+// @route    GET api/contact/:id
+// @desc     delete a contact
+// @Access   Public
+server.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const contact = await db("contact")
+      .where({ id })
+      .del();
+    if (contact) {
+      getAllContact(req, res);
+    } else {
+      res.status(404).json({ message: "contact not found" });
+    }
+  } catch (err) {
+    return errorHelper(500, "server internal error", res);
+  }
+});
+
+
+
+
 module.exports = server;
