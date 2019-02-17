@@ -2,12 +2,12 @@ const express = require("express");
 const server = express.Router();
 const nodemailer = require("nodemailer");
 const db = require("../../data/dbConfig");
-
+//nodemailer connectt server
 const transport = {
   host: "smtp.gmail.com",
   auth: {
-    user: process.env.USR,
-    pass: process.env.PASS
+    user: "jbmiranda22796@gmail.com",
+    pass: "6198460543"
   }
 };
 const transporter = nodemailer.createTransport(transport);
@@ -18,6 +18,7 @@ transporter.verify((err, success) => {
     console.log("Server is ready to take messages");
   }
 });
+
 const errorHelper = (statusCode, message, res) => {
   res.status(statusCode).json({ message });
 };
@@ -64,7 +65,7 @@ server.post("/", async (req, res) => {
 
   const mail = {
     from: name,
-    to: "benedictmiranda27@yahoo.com",
+    to: "jbmiranda22796@gmail.com",
     subject: `New Message from Portfolio Form`,
     text: `from name: ${name} ${email}  ${message}`
   };
@@ -95,8 +96,5 @@ server.delete("/:id", async (req, res) => {
     return errorHelper(500, "server internal error", res);
   }
 });
-
-
-
 
 module.exports = server;
