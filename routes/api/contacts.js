@@ -36,6 +36,25 @@ server.get("/", async (req, res) => {
   }
 });
 
+// @route    GET api/conatct/:id
+// @desc     get single item
+// @Access   Public
+server.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const contact = await db("contact")
+      .where({ id })
+      .first();
+    if (contact) {
+      res.status(200).json(contact);
+    } else {
+      res.status(404).json({ message: "contact not found" });
+    }
+  } catch (err) {
+    return errorHelper(500, "server internal error", res);
+  }
+});
+
 // @route    GET api/contact
 // @desc     send email to me once they submit form
 // @Access   Public
