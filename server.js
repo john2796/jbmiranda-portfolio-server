@@ -12,7 +12,7 @@ server.use(express.json());
 server.use(cors());
 server.use(helmet());
 server.use(logger("dev"));
-
+//https://localhost:5000/api/contact
 server.use("/api/contact", contactRoute);
 
 const port = process.env.PORT || 4000;
