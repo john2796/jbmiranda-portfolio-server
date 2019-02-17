@@ -54,9 +54,9 @@ server.post("/", async (req, res) => {
 
   transporter.sendMail(mail, (err, data) => {
     if (err) {
-      res.json({ msg: "fail" });
+      res.json({ message: "fail" });
     } else {
-      res.json({ msg: "success" });
+      res.json({ message: "success" });
     }
   });
 });
