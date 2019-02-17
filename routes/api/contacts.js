@@ -3,6 +3,7 @@ const server = express.Router();
 const nodemailer = require("nodemailer");
 const db = require("../../data/dbConfig");
 //nodemailer connectt server
+
 const transport = {
   host: "smtp.gmail.com",
   port: 465,
