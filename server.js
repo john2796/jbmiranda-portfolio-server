@@ -12,6 +12,11 @@ server.use(express.json());
 server.use(cors());
 server.use(helmet());
 server.use(logger("dev"));
+
+server.get("/", (req, res) => {
+  res.status(200).send("<h1>HEllo ! Welcome to my API jbmiranda</h1> ");
+});
+
 //https://localhost:5000/api/contact
 server.use("/api/contact", contactRoute);
 
